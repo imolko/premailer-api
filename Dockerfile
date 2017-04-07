@@ -1,4 +1,4 @@
-FROM ruby:2.4.1-alpine
+FROM ruby:2.4.1
 
 # Establecemos a utf-8
 ENV LANG C.UTF-8
@@ -13,7 +13,7 @@ COPY Gemfile /usr/src/app
 COPY Gemfile.lock /usr/src/app
 
 # Ejecutamos la compilacion.
-RUN bundle install --without development
+RUN bundle install --verbose --without development
 
 # Exponemos el puerto 80
 EXPOSE 80
