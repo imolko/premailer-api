@@ -99,6 +99,8 @@ class App < Sinatra::Base
         # Establecemos las opciones
         options = Hash.new
         options[:with_html_string] = false
+        options[:include_link_tags] = false
+        options[:include_style_tags] = false
 
         # Leemos los parametros desde el json
         param_options = params["options"];
