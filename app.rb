@@ -60,10 +60,10 @@ class App < Sinatra::Base
         headers "Content-Type" => "message/rfc822"
         
         mail = Mail.new do
-            to      '{*buzon*}'
-            from    '{*env.from*}'
-            reply   'loco'
-            subject 'Subject'
+            to      '{{to}}'
+            from    '{{from}}'
+            reply   '{{from}}'
+            subject "{{iml.subject}}"
         end
 
         _charset = 'utf-8'
@@ -121,18 +121,34 @@ class App < Sinatra::Base
 
         if params["output"] == "html"
             headers "Content-Type" => "text/html"
+
+            # Escribimos los warning como headers.
+            premailer.warnings.group_by { |w| w[:level].downcase }.map do |key, wa|
+                wa.map do |w|
+                    headers "X-warning-#{key}" => "#{w[:message]} may not render properly in #{w[:clients]}"
+                end
+            end
+
             premailer.to_inline_css
         elsif params["output"] == "text"
             headers "Content-Type" => "text/plain"
+
+            # Escribimos los warning como headers.
+            premailer.warnings.group_by { |w| w[:level].downcase }.map do |key, wa|
+                wa.map do |w|
+                    headers "X-warning-#{key}" => "#{w[:message]} may not render properly in #{w[:clients]}"
+                end
+            end
+
             premailer.to_plain_text
         elsif params["output"] == "mime"
             headers "Content-Type" => "message/rfc822"
 
             _mail = Mail.new do
-                to      '{*buzon*}'
-                from    '{*env.from*}'
-                reply   'loco'
-                subject 'Subject'
+                to      '{{to}}'
+                from    '{{from}}'
+                reply   '{{from}}'
+                subject "{{iml.subject}}"
             end
 
             _text_part = Mail::Part.new do
