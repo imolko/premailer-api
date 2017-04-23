@@ -10,7 +10,6 @@ require "sinatra/multi_route"
 require "premailer"
 require "oj"
 require "mail"
-require 'securerandom'
 
 # Determina si un string es un uri.
 # externo.
