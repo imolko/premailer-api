@@ -152,8 +152,19 @@ class App < Sinatra::Base
                 subject "{{iml.subject}}"
             end
 
-            # Suponemos que todos los emails de premailer incluyen el footer
-            _mail.header['X-ZNK-INCLUDED-FOOTER'] = SecureRandom.uuid
+            # Leemos headers desde la llamada.
+            _param_headers = params["mimeHeaders"];
+            if ! _param_headers.nil?
+                if _param_headers.is_a?(Hash)
+                    _param_headers.each{ |key, value| 
+                        _mail.header[key] = value
+                    }
+                else
+                    _param_headers.each{ |item| 
+                        _mail.header[item["header"]] = item["value"]
+                    }
+                end
+            end
 
             _text_part = Mail::Part.new do
                 content_type 'text/plain; charset=UTF-8'
