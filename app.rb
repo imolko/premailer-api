@@ -60,12 +60,26 @@ class App < Sinatra::Base
 
         headers "Content-Type" => "message/rfc822"
         
-        mail = Mail.new do
+        _mail = Mail.new do
             to      '{{to}}'
             from    '{{from}}'
             reply   '{{from}}'
             subject "{{iml.subject}}"
         end
+
+        # Leemos headers desde la llamada.
+        _param_headers = params["mimeHeaders"];
+        if ! _param_headers.nil?
+            if _param_headers.is_a?(Hash)
+                _param_headers.each{ |key, value| 
+                    _mail.header[key] = value
+                }
+            else
+                _param_headers.each{ |item| 
+                    _mail.header[item["header"]] = item["value"]
+                }
+            end
+        end        
 
         _charset = 'utf-8'
         _content_type = 'text/html; charset=utf-8'
@@ -91,9 +105,9 @@ class App < Sinatra::Base
             body  _content
         end
 
-        mail.html_part = html_part
+        _mail.html_part = html_part
 
-        mail.to_s
+        _mail.to_s
     end
 
     post '/api/1.0/premailer' do
