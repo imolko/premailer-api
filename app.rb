@@ -10,6 +10,7 @@ require "sinatra/multi_route"
 require "premailer"
 require "oj"
 require "mail"
+require 'securerandom'
 
 # Determina si un string es un uri.
 # externo.
@@ -150,6 +151,9 @@ class App < Sinatra::Base
                 reply   '{{from}}'
                 subject "{{iml.subject}}"
             end
+
+            # Suponemos que todos los emails de premailer incluyen el footer
+            _mail.header['X-ZNK-INCLUDED-FOOTER'] = SecureRandom.uuid
 
             _text_part = Mail::Part.new do
                 content_type 'text/plain; charset=UTF-8'
