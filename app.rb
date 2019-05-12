@@ -137,22 +137,22 @@ class App < Sinatra::Base
             headers "Content-Type" => "text/html"
 
             # Escribimos los warning como headers.
-            premailer.warnings.group_by { |w| w[:level].downcase }.map do |key, wa|
-                wa.map do |w|
-                    headers "X-warning-#{key}" => "#{w[:message]} may not render properly in #{w[:clients]}"
-                end
-            end
+            #premailer.warnings.group_by { |w| w[:level].downcase }.map do |key, wa|
+            #    wa.map do |w|
+            #        headers "X-warning-#{key}" => "#{w[:message]} may not render properly in #{w[:clients]}"
+            #    end
+            #end
 
             premailer.to_inline_css
         elsif params["output"] == "text"
             headers "Content-Type" => "text/plain"
 
             # Escribimos los warning como headers.
-            premailer.warnings.group_by { |w| w[:level].downcase }.map do |key, wa|
-                wa.map do |w|
-                    headers "X-warning-#{key}" => "#{w[:message]} may not render properly in #{w[:clients]}"
-                end
-            end
+            #premailer.warnings.group_by { |w| w[:level].downcase }.map do |key, wa|
+            #    wa.map do |w|
+            #        headers "X-warning-#{key}" => "#{w[:message]} may not render properly in #{w[:clients]}"
+            #    end
+            #end
 
             premailer.to_plain_text
         elsif params["output"] == "mime"
@@ -194,11 +194,11 @@ class App < Sinatra::Base
             _mail.html_part = _html_part
 
             # Escribimos los warning como headers.
-            premailer.warnings.group_by { |w| w[:level].downcase }.map do |key, wa|
-                wa.map do |w|
-                    _mail.header["X-warning-#{key}"] = "#{w[:message]} may not render properly in #{w[:clients]}"
-                end
-            end
+            #premailer.warnings.group_by { |w| w[:level].downcase }.map do |key, wa|
+            #    wa.map do |w|
+            #        _mail.header["X-warning-#{key}"] = "#{w[:message]} may not render properly in #{w[:clients]}"
+            #    end
+            #end
 
             _mail.to_s
         else

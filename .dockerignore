@@ -1,6 +1,2 @@
-[Dolphin]
-HeaderColumnWidths=435,72,120,91
-Timestamp=2017,4,5,22,36,15
-Version=3
-ViewMode=1
-VisibleRoles=Details_text,Details_size,Details_date,Details_owner,CustomizedDetails
+/vendor
+/.bundle

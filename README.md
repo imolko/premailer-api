@@ -1,2 +1,2 @@
 # premailer-api
-Api para premailer.
+Api para premailer. Version 2.
