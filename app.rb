@@ -10,6 +10,7 @@ require "sinatra/multi_route"
 require "premailer"
 require "oj"
 require "mail"
+require "open-uri"
 
 # Determina si un string es un uri.
 # externo.
@@ -100,6 +101,11 @@ class App < Sinatra::Base
                 _content = _content.scrub
             end
         }
+
+        rescue OpenURI::HTTPError => the_error
+            the_status = the_error.io.status[0] # => 3xx, 4xx, or 5xx
+            puts "Whoops got a bad status code #{the_error.message}"
+        end
 
         html_part = Mail::Part.new do
             content_type "#{_content_type}; charset=#{_charset}"
@@ -238,6 +244,9 @@ class ExceptionHandling
 
       hash = { :message => ex.to_s }
       hash[:backtrace] = ex.backtrace 
+      hash[:class => ex.class]
+      hash[:text => ex.message]
+      hash[:error => ex.full_message(false, :top)]
 
       #if RACK_ENV['development']
       #  hash[:backtrace] = ex.backtrace 
