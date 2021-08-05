@@ -56,6 +56,7 @@ class App < Sinatra::Base
     # llamada a premailer.
     post '/api/1.0/mime' do
         url = params["content"]
+        puts "URL Target: #{url}"
 
         headers "Content-Type" => "message/rfc822"
         
@@ -126,6 +127,7 @@ class App < Sinatra::Base
         options[:adapter] = :nokogiri
 
         email_contents = params["content"]
+        puts "URL Target: #{email_contents}"
 
         # levantamos un error si se espera un url y no se encuentra.
         raise ArgumentError, 'Argument is not url' unless  options[:with_html_string] || uri(email_contents)
